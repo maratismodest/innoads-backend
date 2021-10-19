@@ -1,4 +1,4 @@
-const {Post} = require("../models")
+const {Post} = require("../models/models")
 
 class PostController {
     // async create(req, res, next) {
@@ -34,7 +34,7 @@ class PostController {
 
     // async getOne(req, res) {
     //     const {id} = req.params
-    //     const device = await Device.findOne(
+    //     const device = await Post.findOne(
     //         {
     //             where: {id},
     //             include: [{model: DeviceInfo, as: 'info'}]
