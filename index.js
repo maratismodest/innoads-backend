@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 8080
 const app = express()
 app.use(cors())
 app.use(express.json())
-app.use('/api', router)
+app.use('/', router)
 
 app.get("/", function (req, res) {
     res.json({message: "Success!"});

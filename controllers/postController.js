@@ -32,16 +32,60 @@ class PostController {
         return res.json(posts)
     }
 
-    // async getOne(req, res) {
-    //     const {id} = req.params
-    //     const device = await Post.findOne(
-    //         {
-    //             where: {id},
-    //             include: [{model: DeviceInfo, as: 'info'}]
-    //         },
-    //     )
-    //     return res.json(device)
-    // }
+    async deletePost(req, res) {
+        const posts = await Post.destroy({
+            where: {
+                id: req.params.id
+            }
+        });
+        return res.json(posts)
+    }
+
+    async getPosts(req, res) {
+        const hasParameters = Object.keys(req.query).length
+        if (!hasParameters) {
+            const posts = await Post.findAll()
+            return res.json(posts)
+        }
+        const {userId} = req.query
+        const posts = await Post.findAll({
+            where: {
+                userId
+            }
+        })
+        return res.json(posts)
+    }
+
+
+    async getUserPosts(req, res) {
+        // const {id} = req.query
+        //
+        // const posts = await Post.findAll({
+        //     where: {
+        //         userId:id
+        //     }
+        // })
+        return res.json({id: 2})
+    }
+
+    async getOne(req, res) {
+        const {slug} = req.params
+        const post = await Post.findOne(
+            {
+                where: {slug},
+            },
+        )
+        return res.json(post)
+    }
+
+    async postPost(req, res) {
+        const device = await Post.create(
+            {
+                ...req.body
+            },
+        )
+        return res.json(device)
+    }
 }
 
 module.exports = new PostController()

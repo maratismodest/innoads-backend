@@ -5,6 +5,10 @@ const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     email: {type: DataTypes.STRING, unique: true},
     password: {type: DataTypes.STRING},
+    name: {type: DataTypes.STRING},
+    surname: {type: DataTypes.STRING},
+    telegram: {type: DataTypes.STRING, unique: true},
+    phone: {type: DataTypes.STRING, unique: true},
     role: {type: DataTypes.STRING, defaultValue: "USER"},
 })
 
@@ -34,4 +38,5 @@ Post.belongsTo(Category)
 module.exports = {
     Post,
     Category,
+    User
 }
