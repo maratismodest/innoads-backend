@@ -1,4 +1,4 @@
-const {Post} = require("../models/models")
+const {Post, User} = require("../models/models")
 
 class PostController {
     // async create(req, res, next) {
@@ -73,8 +73,15 @@ class PostController {
         const post = await Post.findOne(
             {
                 where: {slug},
-            },
+            }
         )
+        // const user = await User.findOne({
+        //     where: {
+        //         id: post.userId
+        //     }
+        // })
+        //
+        // const result = {...post,email: user.email }
         return res.json(post)
     }
 
@@ -86,6 +93,20 @@ class PostController {
         )
         return res.json(device)
     }
+
+    async putPost(req, res) {
+        const device = await Post.update(
+            {
+                ...req.body
+            }, {
+                where: {
+                    id: req.body.id
+                }
+            }
+        )
+        return res.json(device)
+    }
+
 }
 
 module.exports = new PostController()
