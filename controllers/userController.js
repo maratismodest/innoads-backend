@@ -3,18 +3,32 @@ const {DataTypes} = require("sequelize");
 
 class UserController {
     async getAll(req, res) {
+        const users = await User.findAll()
         const hasParameters = Object.keys(req.query).length
         if (!hasParameters) {
-            const posts = await User.findAll()
-            return res.json(posts)
+
+            return res.json(users)
         }
-        const {email} = req.query
-        const user = await User.findOne({
-            where: {
-                email
-            }
-        })
-        return res.json(user)
+        const {email, userId} = req.query
+        if (email) {
+            const user = await User.findOne({
+                where: {
+                    email
+                }
+            })
+            return res.json(user)
+        }
+
+        if (userId) {
+            const user = await User.findOne({
+                where: {
+                    id: userId
+                }
+            })
+            return res.json(user)
+        }
+        return res.json(users)
+
     }
 
     async postUser(req, res) {
