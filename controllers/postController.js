@@ -86,12 +86,20 @@ class PostController {
     }
 
     async postPost(req, res) {
-        const device = await Post.create(
-            {
-                ...req.body
-            },
-        )
-        return res.json(device)
+        try {
+            const post = await Post.create(
+
+                {
+                    ...req.body
+                },
+            )
+            return res.json(post)
+        }
+        catch (e){
+            console.log(e)
+            return res.json(null)
+        }
+
     }
 
     async putPost(req, res) {
