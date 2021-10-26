@@ -1,6 +1,18 @@
 const sequelize = require('../db')
 const {DataTypes} = require('sequelize')
 
+const Tg = sequelize.define('tg', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    username: {type: DataTypes.STRING, unique: true},
+    photo_url: {type: DataTypes.STRING},
+    first_name: {type: DataTypes.STRING},
+    last_name: {type: DataTypes.STRING},
+    tgId: {type: DataTypes.INTEGER, unique: true},
+    role: {type: DataTypes.STRING, defaultValue: "USER"},
+    auth_date: {type: DataTypes.INTEGER},
+    hash: {type: DataTypes.STRING},
+})
+
 const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     email: {type: DataTypes.STRING, unique: true},
@@ -29,8 +41,10 @@ const Category = sequelize.define('category', {
 })
 
 
-User.hasMany(Post)
-Post.belongsTo(User)
+// User.hasMany(Post)
+Tg.hasMany(Post)
+// Post.belongsTo(User)
+Post.belongsTo(Tg)
 Category.hasMany(Post)
 Post.belongsTo(Category)
 
@@ -38,5 +52,6 @@ Post.belongsTo(Category)
 module.exports = {
     Post,
     Category,
-    User
+    User,
+    Tg
 }

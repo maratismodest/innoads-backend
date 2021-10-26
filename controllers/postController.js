@@ -47,10 +47,10 @@ class PostController {
             const posts = await Post.findAll()
             return res.json(posts)
         }
-        const {userId} = req.query
+        const {tgId} = req.query
         const posts = await Post.findAll({
             where: {
-                userId
+                tgId
             }
         })
         return res.json(posts)
@@ -95,7 +95,7 @@ class PostController {
     }
 
     async putPost(req, res) {
-        const device = await Post.update(
+        const post = await Post.update(
             {
                 ...req.body
             }, {
@@ -104,7 +104,7 @@ class PostController {
                 }
             }
         )
-        return res.json(device)
+        return res.json(post)
     }
 
 }
