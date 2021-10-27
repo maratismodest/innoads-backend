@@ -3,23 +3,8 @@ const {Tg} = require("../models/models");
 class TelegramController {
     async postUser(req, res) {
         try {
-            let {
-                auth_date,
-                first_name,
-                hash,
-                id,
-                last_name,
-                photo_url,
-                username
-            } = req.body
             const user = await Tg.create({
-                auth_date,
-                first_name,
-                hash,
-                tgId: id,
-                last_name,
-                photo_url,
-                username
+                ...req.body
             });
             return res.json(user)
         } catch (e) {
@@ -30,10 +15,10 @@ class TelegramController {
     }
 
     async getUser(req, res) {
-        const {tgId} = req.query
+        const {id} = req.query
         const user = await Tg.findOne(
             {
-                where: {tgId},
+                where: {id},
             },
         )
         return res.json(user)
