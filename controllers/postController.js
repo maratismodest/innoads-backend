@@ -1,12 +1,60 @@
 const {Post, User} = require("../models/models")
 
 class PostController {
+    
 
+    async getPosts(req, res) {
+        let page = 0;
+        let size = 10;
+        let categoryId = 1;
+        let tgId = 0;
+        const pageAsNumber = parseInt(req.query.page)
+        const sizeAsNumber = parseInt(req.query.size)
+        const categoryAsNumber = parseInt(req.query.category);
+        const tgIdAsNumber = parseInt(req.query.tgId);
 
-    async getAll(req, res) {
-        const posts = await Post.findAll()
-        return res.json(posts)
+        if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+            page = pageAsNumber
+        }
+        if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+            size = sizeAsNumber
+        }
+        const options = {}
+        if (!Number.isNaN(categoryAsNumber) && categoryAsNumber > 0 && categoryAsNumber < 5) {
+            categoryId = categoryAsNumber
+            options.categoryId = categoryId
+        } 
+
+        if (!Number.isNaN(tgIdAsNumber) && tgIdAsNumber > 0) {
+            tgId = tgIdAsNumber
+            options.tgId = tgId
+        }
+
+        const posts = await Post.findAndCountAll({
+            offset: page * size, limit: size,
+            order: [['createdAt', 'DESC']],
+            where: options
+        })
+        return res.json({
+            content: posts.rows,
+            totalPages: Math.ceil(posts.count / size)
+        })
     }
+
+    // async getPosts(req, res) {
+    //     const hasParameters = Object.keys(req.query).length
+    //     if (!hasParameters) {
+    //         const posts = await Post.findAll()
+    //         return res.json(posts)
+    //     }
+    //     const {tgId} = req.query
+    //     const posts = await Post.findAll({
+    //         where: {
+    //             tgId
+    //         }
+    //     })
+    //     return res.json(posts)
+    // }
 
     async deletePost(req, res) {
         const posts = await Post.destroy({
@@ -14,21 +62,6 @@ class PostController {
                 id: req.params.id
             }
         });
-        return res.json(posts)
-    }
-
-    async getPosts(req, res) {
-        const hasParameters = Object.keys(req.query).length
-        if (!hasParameters) {
-            const posts = await Post.findAll()
-            return res.json(posts)
-        }
-        const {tgId} = req.query
-        const posts = await Post.findAll({
-            where: {
-                tgId
-            }
-        })
         return res.json(posts)
     }
 
@@ -73,29 +106,3 @@ class PostController {
 }
 
 module.exports = new PostController()
-
-// async create(req, res, next) {
-//     try {
-//         let {name, price, brandId, typeId, info} = req.body
-//         const {img} = req.files
-//         let fileName = uuid.v4() + ".jpg"
-//         img.mv(path.resolve(__dirname, '..', 'static', fileName))
-//         const device = await Device.create({name, price, brandId, typeId, img: fileName});
-//
-//         if (info) {
-//             info = JSON.parse(info)
-//             info.forEach(i =>
-//                 DeviceInfo.create({
-//                     title: i.title,
-//                     description: i.description,
-//                     deviceId: device.id
-//                 })
-//             )
-//         }
-//
-//         return res.json(device)
-//     } catch (e) {
-//         next(ApiError.badRequest(e.message))
-//     }
-//
-// }
