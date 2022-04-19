@@ -1,7 +1,7 @@
 const {Post, User} = require("../models/models")
 
 class PostController {
-    
+
 
     async getPosts(req, res) {
         let page = 0;
@@ -23,7 +23,7 @@ class PostController {
         if (!Number.isNaN(categoryAsNumber) && categoryAsNumber > 0 && categoryAsNumber < 5) {
             categoryId = categoryAsNumber
             options.categoryId = categoryId
-        } 
+        }
 
         if (!Number.isNaN(tgIdAsNumber) && tgIdAsNumber > 0) {
             tgId = tgIdAsNumber
