@@ -2,7 +2,6 @@ const {Post, User} = require("../models/models")
 
 class PostController {
 
-
     async getPosts(req, res) {
         let page = 0;
         let size = 10;
@@ -16,7 +15,7 @@ class PostController {
         if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
             page = pageAsNumber
         }
-        if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+        if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0) {
             size = sizeAsNumber
         }
         const options = {}
