@@ -55,6 +55,7 @@ class PostController {
     //     })
     //     return res.json(posts)
     // }
+    //
 
     async deletePost(req, res) {
         const posts = await Post.destroy({
