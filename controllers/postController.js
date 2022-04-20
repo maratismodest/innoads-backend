@@ -1,16 +1,19 @@
 const {Post, User} = require("../models/models")
-
+const sequelize = require('sequelize')
+const {Op} = sequelize
+const _ = require('lodash')
 class PostController {
 
     async getPosts(req, res) {
         let page = 0;
-        let size = 10;
+        let size = 12;
         let categoryId = 1;
         let tgId = 0;
         const pageAsNumber = parseInt(req.query.page)
         const sizeAsNumber = parseInt(req.query.size)
         const categoryAsNumber = parseInt(req.query.category);
         const tgIdAsNumber = parseInt(req.query.tgId);
+        const text = req.query.text
 
         if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
             page = pageAsNumber
@@ -27,6 +30,24 @@ class PostController {
         if (!Number.isNaN(tgIdAsNumber) && tgIdAsNumber > 0) {
             tgId = tgIdAsNumber
             options.tgId = tgId
+        }
+
+        if (text) {
+            options[Op.or] = {
+                title: {
+                    [Op.or]: {
+                        [Op.like]: `%${_.upperFirst(text)}%`,
+                        [Op.like]: `%${_.lowerFirst(text)}%`
+                    }
+                },
+                body: {
+                    [Op.or]: {
+                        [Op.like]: `%${_.upperFirst(text)}%`,
+                        [Op.like]: `%${_.lowerFirst(text)}%`
+                    }
+                },
+              }
+              
         }
 
         const posts = await Post.findAndCountAll({
