@@ -37,10 +37,10 @@ class PostController {
 
     if (text) {
       options.title = {
-        [Op.or]: {
-          [Op.like]: `%${_.upperFirst(text)}%`,
-          [Op.like]: `%${_.lowerFirst(text)}%`,
-        },
+        [Op.or]: [
+          { [Op.like]: `%${_.upperFirst(text)}%` },
+          { [Op.like]: `%${_.lowerFirst(text)}%` },
+        ],
       };
     }
 
