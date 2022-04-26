@@ -1,7 +1,7 @@
 const {Tg} = require("../models/models");
 const axios = require("axios")
 
-const media = (images) => {
+const convertLinksToMedia = (images) => {
     return images.map(image => {
         return {
             "type": "photo",
@@ -10,19 +10,37 @@ const media = (images) => {
     })
 }
 
+const options = [
+    {value: 1, label: "Продам"},
+    {value: 2, label: "Куплю"},
+    {value: 3, label: "Услуги"},
+    {value: 4, label: "Вакансии"},
+];
+
+
 class TelegramController {
     async postTelegram(req, res) {
         try {
+            // const chat_id = "@innoadsstage"
             const chat_id = "@innoads"
-            console.log('HERE', req.body)
             const form = req.body
-            const {title, body, price, slug, telegram, category} = form
+            const {title, body, price, slug, telegram, categoryId} = form
+            const category = options.find((item)=> item.value == categoryId).label
             const images = form.images.split("||")
-            const sendPhoto = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMediaGroup?chat_id=${chat_id}`
-            await axios.post(sendPhoto, {media: media(images)})
-            const text = `<b>${category} : ${title}</b> %0A %0A${encodeURI(body)} %0A${encodeURI('Цена')}:${price} %0A${encodeURI('Подробнее')}: https://innoads.ru/post/${slug} %0A %0A${encodeURI('автор')}: @${telegram}`;
-            const sendMessage = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chat_id}&text=${text}&parse_mode=html`
+            
+
+            //media
+            const sendPhoto = `https://api.telegram.org/bot${process.env.BOT_TOKEN_PROD}/sendMediaGroup?chat_id=${chat_id}`
+            const media = convertLinksToMedia(images)
+            console.log("media",media)
+            await axios.post(sendPhoto, {media: convertLinksToMedia(images)})
+
+
+            //message
+            const text = `<b>${encodeURI(category)} : ${title}</b> %0A %0A${encodeURI(body)} %0A${encodeURI('Цена')}:${price} %0A${encodeURI('Подробнее')}: https://innoads.ru/post/${slug} %0A %0A${encodeURI('автор')}: @${telegram}`;
+            const sendMessage = `https://api.telegram.org/bot${process.env.BOT_TOKEN_PROD}/sendMessage?chat_id=${chat_id}&text=${text}&parse_mode=html`
             await axios.get(sendMessage)
+      
             return res.json({status: 'success'});
         } catch (e) {
             console.log(e);
