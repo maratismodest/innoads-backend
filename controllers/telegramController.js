@@ -13,7 +13,7 @@ const media = (images) => {
 class TelegramController {
     async postTelegram(req, res) {
         try {
-            const chat_id = "@innoadsstage"
+            const chat_id = "@innoads"
             console.log('HERE', req.body)
             const form = req.body
             const {title, body, price, slug, telegram, category} = form
