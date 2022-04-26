@@ -2,6 +2,7 @@ const { Post, User } = require("../models/models");
 const sequelize = require("sequelize");
 const { Op } = sequelize;
 const _ = require("lodash");
+
 class PostController {
   async getPosts(req, res) {
     let page = 0;
