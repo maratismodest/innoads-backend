@@ -28,6 +28,15 @@ const Category = sequelize.define("category", {
   name: { type: DataTypes.STRING, unique: true },
 });
 
+const User = sequelize.define("user",{
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  first_name: { type: DataTypes.STRING, defaultValue: null },
+  last_name: { type: DataTypes.STRING, defaultValue: null },
+  email: { type: DataTypes.STRING, unique: true },
+  password: { type: DataTypes.STRING },
+  token: { type: DataTypes.STRING },
+});
+
 // User.hasMany(Post)
 Tg.hasMany(Post);
 // Post.belongsTo(User)
@@ -39,6 +48,7 @@ module.exports = {
   Post,
   Category,
   Tg,
+  User
 };
 
 // const User = sequelize.define('user', {
