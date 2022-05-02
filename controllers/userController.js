@@ -42,6 +42,10 @@ class UserController {
       console.log(user.id);
       return res.json(created);
     }
+    if (user.id == id) {
+      const item = await Tg.update(...req.body, {where: {id: id}});
+      return res.json(item);
+    }
     return res.json(user);
   }
 }
