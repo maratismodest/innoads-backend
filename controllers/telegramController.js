@@ -60,7 +60,7 @@ class TelegramController {
             return res.json(created);
         }
         if (user.id == id) {
-            const item = await Tg.update(...req.body, {where: {id: id}});
+            const item = await Tg.update({auth_date, first_name, hash, last_name, photo_url, username}, {where: {id: id}});
             return res.json(item);
         }
         return res.json(user);
@@ -76,28 +76,3 @@ class TelegramController {
 }
 
 module.exports = new TelegramController();
-
-// async postUser(req, res) {
-//     try {
-//         const user = await Tg.create({
-//             ...req.body
-//         });
-//         return res.json(user)
-//     } catch (e) {
-//         return res.json(e)
-//     }
-//
-//
-// }
-
-
-            // const form = {
-            //     title: 'title',
-            //     body: 'body',
-            //     price: '300',
-            //     slug: 'some-slug',
-            //     telegram: 'maratfaizer',
-            //     category: 'category',
-            //     images: ['https://firebasestorage.googleapis.com/v0/b/classified-b8322.appspot.com/o/benq_ms502_front.jpg?alt=media&token=3eb5309a-3574-440a-ac21-4bd44bcdd775',
-            //         'https://firebasestorage.googleapis.com/v0/b/classified-b8322.appspot.com/o/benq_ms502_front.jpg?alt=media&token=3eb5309a-3574-440a-ac21-4bd44bcdd775']
-            // }
