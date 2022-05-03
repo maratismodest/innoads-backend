@@ -30,14 +30,13 @@ class TelegramController {
             
             //message
             const text = `<b>${encodeURI(category)} : ${title}</b> %0A %0A${encodeURI(body)} %0A${encodeURI('Цена')}:${price} %0A${encodeURI('Подробнее')}: https://innoads.ru/post/${slug} %0A %0A${encodeURI('автор')}: @${telegram}`;
-            const sendMessage = `https://api.telegram.org/bot${process.env.BOT_TOKEN_RELEASE}/sendMessage?chat_id=${chat_id}&text=${text}&parse_mode=html`
+            const sendMessage = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chat_id}&text=${text}&parse_mode=html`
             await axios.get(sendMessage)
 
             //media
-            const sendPhoto = `https://api.telegram.org/bot${process.env.BOT_TOKEN_RELEASE}/sendMediaGroup?chat_id=${chat_id}`
+            const sendPhoto = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMediaGroup?chat_id=${chat_id}`
             const media = convertLinksToMedia(images)
-            console.log("media",media)
-            await axios.post(sendPhoto, {media: convertLinksToMedia(images)})
+            await axios.post(sendPhoto, {media})
       
             return res.json({status: 'success'});
         } catch (e) {
