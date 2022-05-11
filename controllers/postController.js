@@ -1,7 +1,7 @@
 const {Post} = require("../models/models");
 const sequelize = require("sequelize");
 const {Op} = sequelize;
-const _ = require("lodash");
+const {upperFirst, lowerFirst} = require("lodash");
 
 class PostController {
     async getPosts(req, res) {
@@ -37,19 +37,31 @@ class PostController {
         }
 
         if (text) {
-            options.title = {
-                [Op.or]: [
-                    {[Op.like]: `%${_.upperFirst(text)}%`},
-                    {[Op.like]: `%${_.lowerFirst(text)}%`},
-                ],
-            };
+            options[Op.or] = [
+                {
+                    title: {
+                        [Op.or]: [
+                            {[Op.like]: `%${upperFirst(text)}%`},
+                            {[Op.like]: `%${lowerFirst(text)}%`},
+                        ],
+                    }
+                },
+                {
+                    body: {
+                        [Op.or]: [
+                            {[Op.like]: `%${upperFirst(text)}%`},
+                            {[Op.like]: `%${lowerFirst(text)}%`},
+                        ],
+                    }
+                }
+            ]
         }
 
         const posts = await Post.findAndCountAll({
             offset: page * size,
             limit: size,
             order: [["createdAt", "DESC"]],
-            where: options,
+            where: options
         });
         return res.json({
             content: posts.rows,
@@ -102,19 +114,3 @@ class PostController {
 }
 
 module.exports = new PostController();
-
-// async getPosts(req, res) {
-//     const hasParameters = Object.keys(req.query).length
-//     if (!hasParameters) {
-//         const posts = await Post.findAll()
-//         return res.json(posts)
-//     }
-//     const {tgId} = req.query
-//     const posts = await Post.findAll({
-//         where: {
-//             tgId
-//         }
-//     })
-//     return res.json(posts)
-// }
-//
