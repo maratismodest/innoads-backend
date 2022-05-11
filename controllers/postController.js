@@ -25,7 +25,7 @@ class PostController {
         if (
             !Number.isNaN(categoryAsNumber) &&
             categoryAsNumber > 0 &&
-            categoryAsNumber < 5
+            categoryAsNumber < 6
         ) {
             categoryId = categoryAsNumber;
             options.categoryId = categoryId;
