@@ -1,9 +1,37 @@
 const {Post} = require("../models/models");
 const sequelize = require("sequelize");
+const aSequelize = require('./../db')
 const {Op} = sequelize;
 const {upperFirst, lowerFirst} = require("lodash");
 
 class PostController {
+    async putVectors(req, res) {
+        const posts = await Post.findAll();
+        const ids = posts.map(x => x.id)
+
+        const arr = []
+
+        async function processArray(array) {
+            for (const item of array) {
+                const res = await Post.findByPk(item)
+                // console.log('RES',res)
+                const aQuery = `select to_tsvector('russian', body) || to_tsvector('russian', title) from posts where id=${item}`
+                const some = await aSequelize.query(aQuery);
+                const result = some[0][0]['?column?']
+                console.log("RES", result)
+                // arr.push(result)
+
+                // res.vector = result
+                // await res.save();
+            }
+            console.log('Done!');
+        }
+
+        await processArray(ids)
+
+        return res.json(arr);
+    }
+
     async getPosts(req, res) {
         let page = 0;
         let size = 12;
@@ -53,8 +81,12 @@ class PostController {
                             {[Op.like]: `%${lowerFirst(text)}%`},
                         ],
                     }
+                },
+                {
+                    vector: {[Op.match]: sequelize.fn('to_tsquery', 'russian', text)}
                 }
             ]
+            // options.vector = {[Op.match]: sequelize.fn('to_tsquery', 'russian', text)}
         }
 
         const posts = await Post.findAndCountAll({
@@ -114,3 +146,26 @@ class PostController {
 }
 
 module.exports = new PostController();
+
+// const temp = 'передержка'
+// const searchWord = `SELECT * FROM posts WHERE vector @@ to_tsquery('russian', '${temp}');`
+// const res = await aSequelize.query(searchWord)
+
+// options[Op.or] = [
+//     {
+//         title: {
+//             [Op.or]: [
+//                 {[Op.like]: `%${upperFirst(text)}%`},
+//                 {[Op.like]: `%${lowerFirst(text)}%`},
+//             ],
+//         }
+//     },
+//     {
+//         body: {
+//             [Op.or]: [
+//                 {[Op.like]: `%${upperFirst(text)}%`},
+//                 {[Op.like]: `%${lowerFirst(text)}%`},
+//             ],
+//         }
+//     }
+// ]
