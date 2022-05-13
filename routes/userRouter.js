@@ -7,4 +7,3 @@ module.exports = router
 
 router.get('/', userController.getAll)
 router.post('/', userController.postUser)
-// router.post('/', userController.getUser)
