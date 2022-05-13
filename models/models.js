@@ -21,6 +21,7 @@ const Post = sequelize.define("post", {
   images: { type: DataTypes.STRING, allowNull: false },
   slug: { type: DataTypes.STRING, unique: true },
   telegram: { type: DataTypes.STRING },
+  vector: {type: DataTypes.TSVECTOR}
 });
 
 const Category = sequelize.define("category", {
