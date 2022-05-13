@@ -13,8 +13,9 @@ app.use(cors());
 app.use(express.json());
 app.use("/", router);
 
+
 app.get("/", function (req, res) {
-  res.json({ message: "Success!" });
+  res.json({ message: "Success!!" });
 });
 
 app.post("/register", async (req, res) => {
