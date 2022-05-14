@@ -1,5 +1,6 @@
 const {Tg} = require("../models/models");
 const axios = require("axios")
+const {options, convertLinksToMedia} = require("../utils");
 
 class TelegramController {
     async postTelegram(req, res) {
