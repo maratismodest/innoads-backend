@@ -13,7 +13,7 @@ class TelegramController {
             const images = form.images.split("||")
             
             //message
-            const text = `<b>${encodeURI(category)} : ${encode(title)}</b> %0A %0A${encodeURI(body)} %0A${encodeURI('Цена')}:${price} %0A${encodeURI('Подробнее')}: https://innoads.ru/post/${slug} %0A %0A${encodeURI('автор')}: @${telegram}`;
+            const text = `<b>${encodeURI(category)}: ${encodeURI(title)}</b> %0A %0A${encodeURI(body)} %0A${encodeURI('Цена')}: ${price} %0A${encodeURI('Подробнее')}: https://innoads.ru/post/${slug} %0A %0A${encodeURI('автор')}: @${telegram}`;
             const sendMessage = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage?chat_id=${chat_id}&text=${text}&parse_mode=html`
             await axios.get(sendMessage)
 
