@@ -19,12 +19,12 @@ const certificate = fs.readFileSync('/etc/letsencrypt/live/chamala.tatar/fullcha
 const ca = fs.readFileSync('/etc/letsencrypt/live/chamala.tatar/chain.pem', 'utf8');
 
 const credentials = {
-  key: privateKey, cert: certificate, ca: ca
+    key: privateKey, cert: certificate, ca: ca
 };
 
 
 app.get("/", function (req, res) {
-  res.json({ message: "Success!" });
+    res.json({message: "Success!"});
 });
 
 
@@ -33,15 +33,15 @@ const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
 const start = async () => {
-  try {
-    await sequelize.authenticate();
-    await sequelize.sync();
+    try {
+        await sequelize.authenticate();
+        await sequelize.sync();
 
-    httpServer.listen(80, () => console.log(`Server started on port ${80}`));
-    httpsServer.listen(443, () => console.log(`Server started on port ${443}`));
-  } catch (e) {
-    console.log(e);
-  }
+        httpServer.listen(80, () => console.log(`Server started on port ${80}`));
+        httpsServer.listen(443, () => console.log(`Server started on port ${443}`));
+    } catch (e) {
+        console.log(e);
+    }
 };
 
 start();
