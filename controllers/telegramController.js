@@ -1,6 +1,6 @@
 const {Tg} = require("../models/models");
 const axios = require("axios")
-const {options, convertLinksToMedia} = require("../utils");
+const {categories, convertLinksToMedia} = require("../utils");
 
 class TelegramController {
     async postTelegram(req, res) {
@@ -9,7 +9,7 @@ class TelegramController {
             const chat_id = "@innoads"
             const form = req.body
             const {title, body, price, slug, telegram, categoryId} = form
-            const category = options.find((item)=> item.value == categoryId).label
+            const category = categories.find((item)=> item.value == categoryId).label
             const images = form.images.split("||")
             
             //message

@@ -1,6 +1,7 @@
 const {Post} = require("../models/models");
 const sequelize = require("sequelize");
 const aSequelize = require('./../db')
+const {categories} = require("../utils");
 const {Op} = sequelize;
 
 class PostController {
@@ -44,7 +45,7 @@ class PostController {
         if (
             !Number.isNaN(categoryAsNumber) &&
             categoryAsNumber > 0 &&
-            categoryAsNumber < 6
+            categoryAsNumber <= categories.length
         ) {
             categoryId = categoryAsNumber;
             options.categoryId = categoryId;
