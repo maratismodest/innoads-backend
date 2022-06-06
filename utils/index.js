@@ -13,7 +13,8 @@ const categories = [
     {value: 3, label: "Услуги"},
     {value: 4, label: "Вакансии"},
     {value: 5, label: "Недвижимость"},
-    {value: 6, label: "Одежда"}
+    {value: 6, label: "Одежда"},
+    {value: 7, label: "Даром"}
 ];
 
 module.exports = {
