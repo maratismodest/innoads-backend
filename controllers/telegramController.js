@@ -1,5 +1,6 @@
 const { Tg } = require("../models/models");
 const axios = require("axios");
+const jwt = require("jsonwebtoken");
 const { categories, convertLinksToMedia } = require("../utils");
 
 class TelegramController {
