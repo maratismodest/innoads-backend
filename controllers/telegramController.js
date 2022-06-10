@@ -59,7 +59,7 @@ class TelegramController {
       created.token = token;
       return res.json(created);
     }
-    const item = await Tg.update(
+    await Tg.update(
       { auth_date, first_name, hash, last_name, photo_url, username },
       { where: { id: user.id } }
     );
@@ -69,7 +69,7 @@ class TelegramController {
     });
 
     // save user token
-    item.token = token;
+    user.token = token;
     return res.json(item);
   }
 
