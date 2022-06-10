@@ -43,7 +43,7 @@ class TelegramController {
     let { auth_date, first_name, hash, id, last_name, photo_url, username } =
       req.body;
     const [user, created] = await Tg.findOrCreate({
-      where: { id: id },
+      where: { id },
       defaults: {
         ...req.body,
       },
