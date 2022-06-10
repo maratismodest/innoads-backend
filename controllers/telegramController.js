@@ -60,7 +60,7 @@ class TelegramController {
     }
     const item = await Tg.update(
       { auth_date, first_name, hash, last_name, photo_url, username },
-      { where: { id: id } }
+      { where: { id: user.id } }
     );
     // Create token
     const token = jwt.sign({ id }, process.env.TOKEN_KEY, {
