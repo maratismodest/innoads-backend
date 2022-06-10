@@ -69,8 +69,9 @@ class TelegramController {
     });
 
     // save user token
-    user['token'] = token;
-    return res.json(user);
+   
+    return res.json({
+      ...user, token});
   }
 
   async getUser(req, res) {
