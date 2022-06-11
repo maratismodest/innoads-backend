@@ -52,7 +52,7 @@ class TelegramController {
     });
     if (created) {
       // Create token
-      const token = jwt.sign({ id: created.id, username: user.username }, SECRET, {
+      const token = jwt.sign({ id: created.id, username: created.username }, SECRET, {
         expiresIn: 60,
       });
 
