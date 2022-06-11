@@ -64,7 +64,7 @@ class TelegramController {
       { where: { id: user.id } }
     );
     // Create token
-    const token = jwt.sign({ id: user.id }, process.env.TOKEN_KEY, {
+    const token = jwt.sign({ id: user.id, username: user.username }, process.env.TOKEN_KEY, {
       expiresIn: 60,
     });
 
