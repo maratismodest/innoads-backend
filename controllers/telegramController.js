@@ -2,7 +2,6 @@ const { Tg } = require("../models/models");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const { categories, convertLinksToMedia } = require("../utils");
-const SECRET = 'MY_SECRET_KEY';
 
 class TelegramController {
   async postTelegram(req, res) {
@@ -52,9 +51,13 @@ class TelegramController {
     });
     if (created) {
       // Create token
-      const token = jwt.sign({ id: created.id, username: created.username }, SECRET, {
-        expiresIn: 60,
-      });
+      const token = jwt.sign(
+        { id: created.id, username: created.username },
+        $process.env.TOKEN_KEY,
+        {
+          expiresIn: 60,
+        }
+      );
 
       // save user token
       created.token = token;
@@ -65,14 +68,20 @@ class TelegramController {
       { where: { id: user.id } }
     );
     // Create token
-    const token = jwt.sign({ id: user.id, username: user.username }, SECRET, {
-      expiresIn: 60,
-    });
+    const token = jwt.sign(
+      { id: user.id, username: user.username },
+      $process.env.TOKEN_KEY,
+      {
+        expiresIn: 60,
+      }
+    );
 
     // save user token
-   
+
     return res.json({
-      ...user.dataValues, token});
+      ...user.dataValues,
+      token,
+    });
   }
 
   async getUser(req, res) {
