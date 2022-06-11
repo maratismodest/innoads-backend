@@ -55,13 +55,13 @@ class TelegramController {
         { id: created.id, username: created.username },
         process.env.TOKEN_KEY,
         {
-          expiresIn: 60,
+          expiresIn: 60 * 60 * 24 * 365,
         }
       );
 
       // save user token
-      created.token = token;
-      return res.json(created);
+      // created.token = token;
+      return res.json(token);
     }
     await Tg.update(
       { auth_date, first_name, hash, last_name, photo_url, username },
@@ -72,14 +72,13 @@ class TelegramController {
       { id: user.id, username: user.username },
       process.env.TOKEN_KEY,
       {
-        expiresIn: 60,
+        expiresIn: 60 * 60 * 24 * 365,
       }
     );
 
     // save user token
 
     return res.json({
-      ...user.dataValues,
       token,
     });
   }
