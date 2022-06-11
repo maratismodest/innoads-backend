@@ -53,7 +53,7 @@ class TelegramController {
       // Create token
       const token = jwt.sign(
         { id: created.id, username: created.username },
-        $process.env.TOKEN_KEY,
+        process.env.TOKEN_KEY,
         {
           expiresIn: 60,
         }
@@ -70,7 +70,7 @@ class TelegramController {
     // Create token
     const token = jwt.sign(
       { id: user.id, username: user.username },
-      $process.env.TOKEN_KEY,
+      process.env.TOKEN_KEY,
       {
         expiresIn: 60,
       }
