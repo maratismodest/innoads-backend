@@ -26,7 +26,7 @@ const sameUserMiddleware = (req, res, next) => {
 
 };
 
-const isUsersPost = (req, res, next) => {
+const isUsersPost = async (req, res, next) => {
     const post = await Post.findOne({
         where: { id: req.params.id },
     });

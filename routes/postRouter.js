@@ -1,7 +1,7 @@
 const Router = require('express')
 const router = new Router()
 const postController = require('../controllers/postController')
-const { bearerMiddleware, sameUserMiddleware,isUsersPost } = require("../middleware/bearerMiddleware");
+const { bearerMiddleware, sameUserMiddleware, isUsersPost } = require("../middleware/bearerMiddleware");
 
 router.get('/', postController.getPosts)
 router.get('/:slug', postController.getOne)
