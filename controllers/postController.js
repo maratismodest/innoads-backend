@@ -79,31 +79,19 @@ class PostController {
     }
 
     async postPost(req, res) {
-        const token = req.headers.authorization.split(' ')[1]
-        if (!token) {
-            return res.status(401).json({ message: errors.noToken })
+        try {
+            const { title, body } = req.body;
+
+            const post = await Post.create({
+                ...req.body,
+                vector: aSequelize.fn('to_tsvector', 'russian', [title, body].join(' '))
+            });
+            return res.json(post);
+
+        } catch (e) {
+            console.log(e);
+            return res.json(null);
         }
-
-        return jwt.verify(token, 'Kazan2022!', async (err, authData) => {
-            if (err)
-                res.sendStatus(403).message({ message: tokenInvalid });
-            else {
-
-                try {
-                    const { title, body } = req.body;
-                    const post = await Post.create({
-                        ...req.body,
-                        vector: aSequelize.fn('to_tsvector', 'russian', [title, body].join(' '))
-                    });
-                    return res.json(post);
-
-                } catch (e) {
-                    console.log(e);
-                    return res.json(null);
-                }
-            }
-        })
-
     }
 
     async putPost(req, res) {

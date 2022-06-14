@@ -93,13 +93,6 @@ class TelegramController {
         });
     }
 
-    async getUser(req, res) {
-        const { id } = req.query;
-        const user = await Tg.findOne({
-            where: { id },
-        });
-        return res.json(user);
-    }
 }
 
 module.exports = new TelegramController();

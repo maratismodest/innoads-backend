@@ -2,9 +2,6 @@ const upload = require("../middleware/fileserver");
 const fs = require("fs");
 const uploadSingleImage = upload.single('image');
 
-
-// https://chamala.tatar/uploads/1653941219081-Eternals.2021.WEB-DLRip_от New-Team_by_JNS82.avi_snapshot_00.20.26.221.jpg
-
 const domain = 'https://chamala.tatar/'
 
 class UploadController {
