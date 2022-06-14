@@ -78,3 +78,34 @@
 //     console.log(err);
 //   }
 // });
+
+
+// async putVectors(req, res) {
+//     const posts = await Post.findAll();
+//     const ids = posts.map(x => x.id)
+
+//     async function processArray(array) {
+//         for (const item of array) {
+//             const res = await Post.findByPk(item)
+//             const result = aSequelize.fn('to_tsvector', 'russian', [res.title, res.body].join(' '))
+//             res.vector = result
+//             await res.save();
+//         }
+//         console.log('Done!');
+//     }
+
+//     await processArray(ids)
+
+//     return res.json('vectors updated!');
+// }
+
+// const User = sequelize.define('user', {
+//     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+//     email: {type: DataTypes.STRING, unique: true},
+//     password: {type: DataTypes.STRING},
+//     name: {type: DataTypes.STRING},
+//     surname: {type: DataTypes.STRING},
+//     telegram: {type: DataTypes.STRING, unique: true},
+//     phone: {type: DataTypes.STRING, unique: true},
+//     role: {type: DataTypes.STRING, defaultValue: "USER"},
+// })

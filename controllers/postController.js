@@ -1,28 +1,17 @@
-const {Post} = require("../models/models");
+const { Post } = require("../models/models");
+const jwt = require("jsonwebtoken");
 const sequelize = require("sequelize");
 const aSequelize = require('./../db')
-const {categories} = require("../utils");
-const {Op} = sequelize;
+const { categories } = require("../utils");
+const { Op } = sequelize;
+
+
+const errors = {
+    noToken: "Нет токена!",
+    tokenInvalid: 'Неверный токен!'
+}
 
 class PostController {
-    async putVectors(req, res) {
-        const posts = await Post.findAll();
-        const ids = posts.map(x => x.id)
-
-        async function processArray(array) {
-            for (const item of array) {
-                const res = await Post.findByPk(item)
-                const result = aSequelize.fn('to_tsvector', 'russian', [res.title, res.body].join(' '))
-                res.vector = result
-                await res.save();
-            }
-            console.log('Done!');
-        }
-
-        await processArray(ids)
-
-        return res.json('vectors updated!');
-    }
 
     async getPosts(req, res) {
         let page = 0;
@@ -57,7 +46,7 @@ class PostController {
         }
 
         if (text) {
-            options.vector = {[Op.match]: sequelize.fn('to_tsquery', 'russian', text)}
+            options.vector = { [Op.match]: sequelize.fn('to_tsquery', 'russian', text) }
         }
 
         const posts = await Post.findAndCountAll({
@@ -82,30 +71,43 @@ class PostController {
     }
 
     async getOne(req, res) {
-        const {slug} = req.params;
+        const { slug } = req.params;
         const post = await Post.findOne({
-            where: {slug},
+            where: { slug },
         });
         return res.json(post);
     }
 
     async postPost(req, res) {
-
-        try {
-            const {title, body} = req.body;
-            const post = await Post.create({
-                ...req.body,
-                vector: aSequelize.fn('to_tsvector', 'russian', [title, body].join(' '))
-            });
-            return res.json(post);
-        } catch (e) {
-            console.log(e);
-            return res.json(null);
+        const token = req.headers.authorization.split(' ')[1]
+        if (!token) {
+            return res.status(401).json({ message: errors.noToken })
         }
+
+        return jwt.verify(token, 'Kazan2022!', async (err, authData) => {
+            if (err)
+                res.sendStatus(403).message({ message: tokenInvalid });
+            else {
+
+                try {
+                    const { title, body } = req.body;
+                    const post = await Post.create({
+                        ...req.body,
+                        vector: aSequelize.fn('to_tsvector', 'russian', [title, body].join(' '))
+                    });
+                    return res.json(post);
+
+                } catch (e) {
+                    console.log(e);
+                    return res.json(null);
+                }
+            }
+        })
+
     }
 
     async putPost(req, res) {
-        const {title, body} = req.body;
+        const { title, body } = req.body;
         const post = await Post.update(
             {
                 ...req.body,
@@ -122,57 +124,3 @@ class PostController {
 }
 
 module.exports = new PostController();
-
-// const temp = 'передержка'
-// const searchWord = `SELECT * FROM posts WHERE vector @@ to_tsquery('russian', '${temp}');`
-// const res = await aSequelize.query(searchWord)
-
-// options[Op.or] = [
-//     {
-//         title: {
-//             [Op.or]: [
-//                 {[Op.like]: `%${upperFirst(text)}%`},
-//                 {[Op.like]: `%${lowerFirst(text)}%`},
-//             ],
-//         }
-//     },
-//     {
-//         body: {
-//             [Op.or]: [
-//                 {[Op.like]: `%${upperFirst(text)}%`},
-//                 {[Op.like]: `%${lowerFirst(text)}%`},
-//             ],
-//         }
-//     }
-// ]
-
-// console.log('RES',res)
-// const aQuery = `select to_tsvector('russian', body) || to_tsvector('russian', title) from posts where id=${item}`
-// const some = await aSequelize.query(aQuery);
-// const result = some[0][0]['?column?']
-// console.log("RES", result)
-// arr.push(result)
-
-// {
-//     title: {
-//         [Op.or]: [
-//             {[Op.like]: `%${upperFirst(text)}%`},
-//             {[Op.like]: `%${lowerFirst(text)}%`},
-//         ],
-//     }
-// },
-// {
-//     body: {
-//         [Op.or]: [
-//             {[Op.like]: `%${upperFirst(text)}%`},
-//             {[Op.like]: `%${lowerFirst(text)}%`},
-//         ],
-//     }
-// },
-
-// options[Op.or] = [
-//     {
-//         vector: {[Op.match]: sequelize.fn('to_tsquery', 'russian', text)}
-//     }
-// ]
-// options.vector = {[Op.match]: sequelize.fn('to_tsquery', 'russian', text)}
