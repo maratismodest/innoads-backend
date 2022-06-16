@@ -1,8 +1,7 @@
 const { Post } = require("../models/models");
-const jwt = require("jsonwebtoken");
 const sequelize = require("sequelize");
 const aSequelize = require("./../db");
-const { categories } = require("../utils");
+const { categories, sendSubscribe } = require("../utils");
 const { Op } = sequelize;
 
 const errors = {
@@ -81,12 +80,19 @@ class PostController {
           [title, body].join(" ")
         ),
       });
+
+      console.log('POST!!!!!!!!!!!!')
+
+      await sendSubscribe(post)
+
       return res.json(post);
     } catch (e) {
       console.log(e);
       return res.json(null);
     }
   }
+
+
 
   async putPost(req, res) {
     const { title, body, id } = req.body;

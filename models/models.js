@@ -29,14 +29,23 @@ const Category = sequelize.define("category", {
   name: { type: DataTypes.STRING, unique: true },
 });
 
+const Subscribe = sequelize.define("subscibe", {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  name: { type: DataTypes.STRING, allowNull: false},
+});
+
 
 Tg.hasMany(Post);
 Post.belongsTo(Tg);
 Category.hasMany(Post);
 Post.belongsTo(Category);
 
+Tg.hasMany(Subscribe);
+Subscribe.belongsTo(Tg)
+
 module.exports = {
   Post,
   Category,
-  Tg
+  Tg,
+  Subscribe
 };
