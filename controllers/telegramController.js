@@ -48,6 +48,7 @@ class TelegramController {
                 ...req.body,
                 vector: aSequelize.fn('to_tsvector', 'russian', [title, body].join(' '))
             });
+            await sendSubscribe(post)
             return res.json(post);
         } catch (e) {
             console.log(e);
