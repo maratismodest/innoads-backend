@@ -15,7 +15,7 @@ class TelegramController {
                 (item) => item.value == categoryId
             ).label;
             const images = form.images.split("||");
-            const bodyText = body.length > 200 ? body.substring(0,197) + '...' : body
+            const bodyText = body.length > 800 ? body.substring(0,800) + '...' : body
 
             const text = `Категория: #${category}\nЦена: ${price} \n\n${title} \n\n${bodyText} \n\nПодробнее: https://innoads.ru/post/${slug} \n\nавтор: @${telegram}`;
 
