@@ -7,8 +7,8 @@ const aSequelize = require("../db");
 class TelegramController {
     async postTelegram(req, res) {
         try {
-            const chat_id = "@innoadsstage"
-            // const chat_id = "@innoads";
+            // const chat_id = "@innoadsstage"
+            const chat_id = "@innoads";
             const form = req.body;
             const { title, body, price, slug, telegram, categoryId } = form;
             const category = categories.find(
