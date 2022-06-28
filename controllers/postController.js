@@ -81,8 +81,6 @@ class PostController {
         ),
       });
 
-      console.log('POST!!!!!!!!!!!!')
-
       await sendSubscribe(post)
 
       return res.json(post);

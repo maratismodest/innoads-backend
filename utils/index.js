@@ -1,13 +1,22 @@
 const axios = require('axios')
 const { Subscribe } = require("../models/models");
 
-const convertLinksToMedia = (images) => {
-    return images.map(image => {
+const convertLinksToMedia = (images, caption) => {
+    const res = images.map((image, index) => {
+        if (index === 0) {
+            return {
+                "type": "photo",
+                "media": image,
+                "caption": caption
+            }
+        }
+
         return {
             "type": "photo",
-            "media": image
+            "media": image,
         }
     })
+    return res
 }
 
 const categories = [
