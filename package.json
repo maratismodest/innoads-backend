@@ -1,6 +1,6 @@
 {
   "name": "innoads-backend",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,8 @@
     "type": "git",
     "url": "git+https://github.com/maratismodest/innoads-backend.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["innoads"],
+  "author": "Marat Faizerakhmanov",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/maratismodest/innoads-backend/issues"

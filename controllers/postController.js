@@ -4,11 +4,6 @@ const aSequelize = require("./../db");
 const { categories, sendSubscribe } = require("../utils");
 const { Op } = sequelize;
 
-const errors = {
-  noToken: "Нет токена!",
-  tokenInvalid: "Неверный токен!",
-};
-
 class PostController {
   async getPosts(req, res) {
     let page = 0;
@@ -81,7 +76,7 @@ class PostController {
         ),
       });
 
-      await sendSubscribe(post)
+      // await sendSubscribe(post)
 
       return res.json(post);
     } catch (e) {
@@ -89,8 +84,6 @@ class PostController {
       return res.json(null);
     }
   }
-
-
 
   async putPost(req, res) {
     const { title, body, id } = req.body;

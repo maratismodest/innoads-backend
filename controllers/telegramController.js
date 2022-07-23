@@ -7,8 +7,6 @@ const aSequelize = require("../db");
 class TelegramController {
     async postTelegram(req, res) {
         try {
-            // const chat_id = "@innoadsstage"
-            const chat_id = "@innoads";
             const form = req.body;
             const { title, body, price, slug, telegram, categoryId } = form;
             const category = categories.find(
@@ -19,7 +17,7 @@ class TelegramController {
 
             const text = `Категория: #${category}\nЦена: ${price} \n\n${title} \n\n${bodyText} \n\nПодробнее: https://innoads.ru/post/${slug} \n\nавтор: @${telegram}`;
 
-            const sendPhoto = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMediaGroup?chat_id=${chat_id}`;
+            const sendPhoto = `https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMediaGroup?chat_id=${process.env.CHAT_NAME}`;
 
             const media = convertLinksToMedia(images, text);
             await axios.post(sendPhoto, { media });
@@ -38,7 +36,7 @@ class TelegramController {
                 ...req.body,
                 vector: aSequelize.fn('to_tsvector', 'russian', [title, body].join(' '))
             });
-            await sendSubscribe(post)
+            // await sendSubscribe(post)
             return res.json(post);
         } catch (e) {
             console.log(e);

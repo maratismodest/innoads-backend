@@ -2,8 +2,6 @@ const upload = require("../middleware/fileserver");
 const fs = require("fs");
 const uploadSingleImage = upload.single('image');
 
-const domain = 'https://chamala.tatar/'
-
 class UploadController {
 
     async postImage(req, res) {
@@ -17,7 +15,6 @@ class UploadController {
             if (!filedata) {
                 res.json({text: "Ошибка при загрузке файла"});
             } else {
-                // console.log(filedata)
                 const path = req.file.path
                 const name = req.file.filename
                 res.json({message: "Success!", link: `https://chamala.tatar/uploads/${name}`});
@@ -28,9 +25,9 @@ class UploadController {
     async deleteImage(req, res) {
         const {link} = req.body;
         let text = 'nothing to delete!'
-        if (link.startsWith(domain)) {
+        if (link.startsWith(`${process.env.BACKEND}`)) {
             try {
-                const res = link.substring(domain.length, link.length)
+                const res = link.substring(process.env.BACKEND.length, link.length)
                 fs.unlinkSync(`${res}`)
                 text = 'deleted!'
             } catch (e) {
